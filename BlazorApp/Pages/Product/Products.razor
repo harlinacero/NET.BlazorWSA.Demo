@@ -1,0 +1,70 @@
+﻿@page "/products"
+@inject NavigationManager navigationManager;
+@inject IJSRuntime IJSRuntime;
+@inject IRepository<Product> _productsService;
+@inject IToastService toastService
+
+
+<PageTitle>Products</PageTitle>
+
+
+<HeaderPage Title="Products" RouteNavigation="/product" TextButton="Add"></HeaderPage>
+
+@if (_products?.Count() > 0)
+{
+    <div class="products-container container">
+        @foreach (var product in _products)
+        {
+            <div class="card">
+                <img class=“card-img-top” src="@product.Images[0]" alt="Product" loading="lazy" width="270" height="210">
+                <div class=“card-body”>
+                    <h4><b>@product.Title</b></h4>
+                    <p>@product.Price.ToString("C")</p>
+                    <button title="Delete" class="btn btn-danger btn-delete" @onclick="@(() => Delete(product))">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                    <button title="Delete" class="btn btn-info btn-info" @onclick="@(() => Edit(product))">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No existen productos</p>
+}
+
+@code {
+    private IEnumerable<Product> _products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetProducts();
+    }
+
+    private async Task GetProducts()
+    {
+        _products = await _productsService.Get();
+    }
+
+    private async Task Delete(Product product)
+    {
+        bool confirmed = await IJSRuntime.InvokeAsync<bool>("confirm", $"Are you sure to delete {product.Title}?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await _productsService.Delete(product.Id);
+        toastService.ShowSuccess($"The product {product.Title} has been deleted");
+        await GetProducts();
+    }
+
+    private void Edit(Product product)
+    {
+        navigationManager.NavigateTo($"/product/{product.Id}");
+    }
+}

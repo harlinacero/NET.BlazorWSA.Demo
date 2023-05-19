@@ -1,0 +1,70 @@
+﻿@page "/users"
+@inject NavigationManager navigationManager;
+@inject IJSRuntime IJSRuntime;
+@inject IRepository<User> _usersService;
+@inject IToastService toastService
+
+
+<PageTitle>Users</PageTitle>
+
+
+<HeaderPage Title="Users" RouteNavigation="/user" TextButton="Add"></HeaderPage>
+
+@if (_users?.Count() > 0)
+{
+    <div class="user-container container">
+        @foreach (var user in _users)
+        {
+            <div class="card">
+                <img class=“card-img-top” src="@user.Avatar" alt="Product" loading="lazy" width="270" height="210">
+                <div class=“card-body”>
+                    <h4><b>@user.Name</b></h4>
+                    <p>@user.Role</p>
+                    <button title="Delete" class="btn btn-danger btn-delete" @onclick="@(() => Delete(user))">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                    <button title="Delete" class="btn btn-info btn-info" @onclick="@(() => Edit(user))">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>The aren't users</p>
+}
+
+@code {
+    private IEnumerable<User> _users;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await GetUsers();
+    }
+
+    private async Task GetUsers()
+    {
+        _users = await _usersService.Get();
+    }
+
+    private async Task Delete(User user)
+    {
+        bool confirmed = await IJSRuntime.InvokeAsync<bool>("confirm", $"Are you sure to delete {user.Name}?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        await _usersService.Delete(user.Id);
+        toastService.ShowSuccess($"The user {user.Name} has been deleted");
+        await GetUsers();
+    }
+
+    private void Edit(User user)
+    {
+        navigationManager.NavigateTo($"/user/{user.Id}");
+    }
+}

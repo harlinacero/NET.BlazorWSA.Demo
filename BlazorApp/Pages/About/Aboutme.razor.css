@@ -1,0 +1,73 @@
+﻿.header {
+    background-color: #333;
+    color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 8px;
+}
+
+.header .title {
+    display: grid;
+    text-align: center; 
+}
+
+    .header .photo {
+        width: 5rem;
+        height: 5rem;
+        border-radius: 50px;
+    }
+
+
+.group {
+    background: #f7f7f7;
+    border-radius: 8px;
+    margin: 0.5em 0;
+    padding: 1em;
+}
+
+.group-profile {
+    background: #fff;
+    border-radius: 20px;
+    width: 50%;
+}
+
+.group-profile ul li .title-box {
+    display: flex;
+    justify-content: space-between;
+}
+
+.summary {
+}
+
+
+
+.profile-items {
+    display: flex;
+    justify-content: space-between;
+}
+
+
+.education, .experience, .skills .summary{
+    margin: .2em;
+    padding: 1em;
+}
+
+.skills {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-auto-rows: auto;
+    grid-gap: 1rem;
+    justify-content: space-around;
+}
+
+    .skills .card {
+        align-items: center;
+        flex-direction: row;
+        border: 0;
+        padding: .2em;
+    }
+
+    .skills .card img {
+        width: 3em;
+    }

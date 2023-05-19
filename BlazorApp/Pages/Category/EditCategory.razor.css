@@ -1,0 +1,13 @@
+﻿.products-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, 180px);
+    grid-auto-rows: auto;
+    grid-gap: 1rem;
+}
+
+    .products-container .card {
+        text-align: center;
+        align-items: center;
+        padding: 1em;
+        border: 1px solid #c8c8a1;
+    }

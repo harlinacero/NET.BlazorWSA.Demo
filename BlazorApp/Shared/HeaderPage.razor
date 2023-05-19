@@ -1,0 +1,19 @@
+﻿@inject NavigationManager navigationManager;
+
+<div class="box-title">
+    <h1>@Title</h1>
+
+    @if (!string.IsNullOrEmpty(RouteNavigation) && !string.IsNullOrEmpty(TextButton))
+    {
+        <span><button class="btn btn-dark" @onclick="@(()=> navigationManager.NavigateTo(RouteNavigation))">@TextButton</button></span>
+    }
+</div>
+
+@code {
+    [Parameter]
+    public string Title { get; set; }
+    [Parameter]
+    public string RouteNavigation { get; set; }
+    [Parameter]
+    public string TextButton { get; set; }
+}

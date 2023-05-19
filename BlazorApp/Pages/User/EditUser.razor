@@ -1,0 +1,79 @@
+﻿@page "/user/{UserId?}"
+@using BlazorApp.Utils;
+@inject NavigationManager navigationManager;
+@inject ILogger<User> Logger
+@inject IRepository<User> _usersService;
+@inject IToastService toastService
+
+<HeaderPage Title="@title" RouteNavigation="/users" TextButton="Back"></HeaderPage>
+
+<EditForm Model="@user" OnSubmit="@Save">
+    <div class="row">
+        <div class="col-6 form-group">
+            <label for="name" class="col-form-label">Name</label>
+            <InputText id="name" @bind-Value="user.Name" required class="form-control" />
+        </div>
+        <div class="col-6 form-group">
+            <label for="role" class="col-form-label">Role</label>
+            <InputSelect id="role" @bind-Value="user.Role" required class="form-control">
+                <option value="customer">Customer</option>
+                <option value="admin">Admin</option>
+            </InputSelect>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col form-group">
+            <label for="image" class="col-form-label">Image (Url)</label>
+            <InputText id="image" @bind-Value="user.Avatar" required class="form-control" />
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-6 form-group">
+            <label for="email" class="col-form-label">Email</label>
+            <InputText id="email" @bind-Value="user.Email" required class="form-control" />
+        </div>
+        <div class="col-6 form-group">
+            <label for="password" class="col-form-label">Password</label>
+            <InputText id="password" type="password" @bind-Value="user.Password" required class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <button class="btn btn-primary" type="submit">Save</button>
+</EditForm>
+<hr />
+
+@code {
+
+    [Parameter]
+    public string UserId { get; set; }
+
+    private User user = new();
+    private IEnumerable<User> products = new List<User>();
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        user = string.IsNullOrEmpty(UserId) ? new() : await _usersService.GetById(int.Parse(UserId));
+        title = string.IsNullOrEmpty(UserId) ? "Add User" : "Edit User";
+    }
+
+
+
+    private async Task Save()
+    {
+        if (string.IsNullOrEmpty(UserId))
+        {
+            await _usersService.Add(user);
+            PageUtils.ValidateResult(navigationManager, toastService, _usersService.Message, "/users", $"User {user.Name} Added");
+        }
+        else
+        {
+            await _usersService.Update(user);
+            PageUtils.ValidateResult(navigationManager, toastService, _usersService.Message, "/users", $"User {user.Name} Updated");
+        }
+    }
+
+}

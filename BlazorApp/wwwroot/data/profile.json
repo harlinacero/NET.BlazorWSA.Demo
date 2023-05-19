@@ -1,0 +1,100 @@
+﻿{
+  "name": "Harlin Acero Acero",
+  "birtdate": "1991-31-01",
+  "city": "Bogotá",
+  "country": "Colombia",
+  "profession": "Software Engineer",
+  "professionalDescription": "Full Stack Developer",
+  "summary": "As a full stack software developer, I have experience in developing user-oriented applications using technologies such as C#, JavaScript, .NET, Angular, JQuery, and Redux. Additionally, I have strong skills in handling SQL databases (SQL Server, PostgreSQL, Oracle, MySQL) and basic knowledge of MongoDB. I am passionate about the Scrum methodology and have experience using Git repositories with SourceTree. I am known for my adaptability, leadership, and teamwork skills. I am always eager to take on new challenges and acquire new knowledge to meet the needs of clients and the market.",
+  "photo": "https://media.licdn.com/dms/image/C5603AQH4LQIMxaaBbw/profile-displayphoto-shrink_800_800/0/1517022235006?e=1689811200&v=beta&t=CzcM9ExRFKkcDjWNybQTp6jSVMd-CD2RL3eEICvcJWw",
+  "educations": [
+    {
+      "institute": "Universidad Jorge Tadeo Lozano",
+      "start": "2019",
+      "finish": "2020",
+      "title": "Especialista en Desarrollo de Bases de Datos"
+    },
+    {
+      "institute": "Universidad Konrad Lorenz",
+      "start": "2014",
+      "finish": "2018",
+      "title": "Ingeniero de Sistemas"
+    },
+    {
+      "institute": "Universidad Minuto de Dios",
+      "start": "2011",
+      "finish": "2012",
+      "title": "Ingeniero de Sistemas",
+      "image": ""
+    },
+    {
+      "institute": "Universidad Católica Luis Amigó",
+      "start": "2008",
+      "finish": "2012",
+      "title": "Filósofo",
+      "image": ""
+    }
+  ],
+  "experiences": [
+    {
+      "company": "Siigo",
+      "role": "Full Stack Senior Advance",
+      "start": "2022-07-17",
+      "finish": ""
+    },
+    {
+      "company": "DigitalWare",
+      "role": "Software Engineer",
+      "start": "2018-05-21",
+      "finish": "2022-07-14"
+    },
+    {
+      "company": "PIV Ingenieria",
+      "role": "Analista de desarrollo de software",
+      "start": "2017-01-16",
+      "finish": "2018-05-18"
+    }
+  ],
+  "skills": [
+    {
+      "type": "languajes",
+      "name": "C#",
+      "logo": "https://desarrolloweb.com/storage/tag_images/actual/BzOL16MEqsKOe0VThjF6FXPBi0uyK16lkTety9Wz.png"
+    },
+    {
+      "type": "languajes",
+      "name": "TypeScript",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Typescript_logo_2020.svg/1200px-Typescript_logo_2020.svg.png"
+    },
+    {
+      "type": "frameworks",
+      "name": ".NET",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/7d/Microsoft_.NET_logo.svg/2048px-Microsoft_.NET_logo.svg.png"
+    },
+    {
+      "type": "frameworks",
+      "name": "Angular",
+      "logo": "data:image/png;base64,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"
+    },
+    {
+      "type": "devOps",
+      "name": "Azure DevOps",
+      "logo": "https://zulipchat.com/static/images/integrations/logos/azuredevops.svg"
+    },
+    {
+      "type": "devOps",
+      "name": "GitHub",
+      "logo": "https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png"
+    },
+    {
+      "type": "database",
+      "name": "PostgreSQL",
+      "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png"
+    },
+    {
+      "type": "database",
+      "name": "MongoDB",
+      "logo": "https://1000marcas.net/wp-content/uploads/2021/06/MongoDB-Emblem.jpg"
+    }
+  ]
+}

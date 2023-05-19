@@ -1,0 +1,98 @@
+﻿@page "/category/{CategoryId?}"
+@using BlazorApp.Utils;
+@inject NavigationManager navigationManager;
+@inject ILogger<Category> Logger
+@inject IRepository<Category> categoryService;
+@inject IFilterService<Product> productFilterService;
+@inject IToastService toastService
+
+<HeaderPage Title="@title" RouteNavigation="/categories" TextButton="Back"></HeaderPage>
+
+<EditForm Model="@category" OnSubmit="@Save">
+    <div class="row">
+        <div class="col-8 form-group">
+            <label for="name" class="col-form-label"> Name</label>
+
+            <InputText id="name" @bind-Value="category.Name" required class="form-control" />
+        </div>
+    </div>
+    <div class="row">
+        <div class="col form-group">
+            <label for="image" class="col-form-label">Image (Url)</label>
+            <InputText id="image" @bind-Value="category.Image" required class="form-control" />
+        </div>
+    </div>
+    <br />
+
+    <button class="btn btn-primary" type="submit">Save</button>
+</EditForm>
+<hr />
+<article>
+    <h4>Asociated product</h4>
+    <section>
+        @if (products?.Count() > 0)
+        {
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Title</th>
+                            <th>Image</th>
+                            <th>Description</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var product in products)
+                        {
+                            <tr>
+                                <td>@product.Title</td>
+                                <td><img class=“card-img-top” src="@product.Images[0]" alt="Product" loading="lazy" width="30" height="30"></td>
+                                <td>@product.Description</td>
+                                <td>@product.Price.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+        else
+        {
+            <p>No existen productos</p>
+        }
+    </section>
+</article>
+<hr />
+
+@code {
+
+    [Parameter]
+    public string CategoryId { get; set; }
+
+    private Category category = new();
+    private IEnumerable<Product> products = new List<Product>();
+    private string title = string.Empty;
+
+    protected override async Task OnParametersSetAsync()
+    {
+        category = string.IsNullOrEmpty(CategoryId) ? new() : await categoryService.GetById(int.Parse(CategoryId));
+        products = string.IsNullOrEmpty(CategoryId) ? new List<Product>() : await productFilterService.GetByCategory(int.Parse(CategoryId));
+        title = string.IsNullOrEmpty(CategoryId) ? "Add Category" : "Edit Category";
+    }
+
+    private async Task Save()
+    {
+        if (string.IsNullOrEmpty(CategoryId))
+        {
+            await categoryService.Add(category);
+            PageUtils.ValidateResult(navigationManager, toastService, categoryService.Message, "/categories", $"Category {category.Name} Added");
+        }
+        else
+        {
+            await categoryService.Update(category);
+            PageUtils.ValidateResult(navigationManager, toastService, categoryService.Message, "/categories", $"Category {category.Name} Updated");
+        }
+    }
+
+
+}

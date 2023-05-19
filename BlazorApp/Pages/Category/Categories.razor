@@ -1,0 +1,76 @@
+﻿@page "/categories"
+@inject NavigationManager navigationManager;
+@inject IJSRuntime IJSRuntime;
+@inject IRepository<Category> _categoryService;
+@inject IToastService toastService
+
+
+<PageTitle>Caegories</PageTitle>
+
+<HeaderPage Title="Categories" RouteNavigation="/category" TextButton="Add"></HeaderPage>
+
+@if (_categories?.Count() > 0)
+{
+    <div class="categories-container container">
+        @foreach (var category in _categories)
+        {
+            <div class="card">
+                <img class=“card-img-top” src="@category.Image" alt="Product" loading="lazy" width="270" height="210">
+                <div class=“card-body”>
+                    <h4><b>@category.Name</b></h4>
+
+                    <button title="Delete" class="btn btn-danger btn-delete" @onclick="@(() => Delete(category))">
+                        <span class="oi oi-trash"></span>
+                    </button>
+                    <button title="Delete" class="btn btn-info btn-info" @onclick="@(() => Edit(category))">
+                        <span class="oi oi-pencil"></span>
+                    </button>
+                </div>
+
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No existen categorias</p>
+}
+
+@code {
+    private IEnumerable<Category> _categories;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await Get();
+    }
+
+    private async Task Get()
+    {
+        _categories = await _categoryService.Get();
+    }
+
+    private async Task Delete(Category category)
+    {
+        bool confirmed = await IJSRuntime.InvokeAsync<bool>("confirm", $"Are you sure to delete {category.Name}?");
+        if (!confirmed)
+        {
+            return;
+        }
+
+        bool success = await _categoryService.Delete(category.Id);
+        if (!success)
+        {
+            toastService.ShowError($"{category.Name} can't not deleted: {_categoryService.Message}");
+            return;
+        }
+
+        toastService.ShowSuccess($"Category {category.Name} has been deleted");
+        await Get();
+
+    }
+
+    private void Edit(Category category)
+    {
+        navigationManager.NavigateTo($"/category/{category.Id}");
+    }
+}

@@ -1,0 +1,83 @@
+﻿@page "/aboutme"
+@using Newtonsoft.Json;
+@inject HttpClient httpClient
+
+
+@if (profile == null)
+{
+    <p>Sorry, we can't load profile'</p>
+}
+else
+{
+    <header class="header">
+        <div class="header-title">
+            <h1>@profile.Name</h1>
+            <p class="profession">@profile.Profession</p>
+        </div>
+
+        <img src="@profile.Photo" class="photo">
+    </header>
+
+    <section class="skills group">
+
+        @foreach (var skill in profile.Skills)
+        {
+            <div class="card">
+                <img src="@skill.Logo" class="card-img-top" alt="@skill.Type">
+                <div class="card-body">
+                    <h6 class="cad-title">@skill.Name</h6>
+                </div>
+            </div>
+        }
+
+    </section>
+
+    <section class="summary group">
+        <p>@profile.Summary</p>
+    </section>
+
+    <section class="profile-items group">
+        <article class="education group-profile">
+            <h4><i class="fa-solid fa-user-graduate"></i>Education</h4>
+            <ul>
+                @foreach (var study in profile.Educations)
+                {
+                    <li title="@study.Start - @study.Finish">
+                        <div class="title-box"><h5>@study.Title</h5><span>@study.Start - @study.Finish</span></div>
+                        <h6>@study.Institute</h6>
+                    </li>
+                }
+            </ul>
+        </article>
+        <article class="experience group-profile">
+            <h4>Experience</h4>
+            <ul>
+                @foreach (var experience in profile.Experiences)
+                {
+                    <li title="@experience.Start - @experience.Finish">
+                        <div class="title-box"><h5>@experience.Role</h5><span>@experience.WorkingDates - @experience.TotalTemp</span></div>
+                        <h6>@experience.Company</h6>
+                    </li>
+                }
+            </ul>
+        </article>
+    </section>
+
+
+
+}
+
+@code {
+    private Profile profile = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        string fileContent = await httpClient.GetStringAsync("data/profile.json");
+        profile = JsonConvert.DeserializeObject<Profile>(fileContent);
+
+
+
+        Console.WriteLine(profile);
+    }
+
+}
