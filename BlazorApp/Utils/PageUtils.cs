@@ -17,5 +17,16 @@ namespace BlazorApp.Utils
                 toastService.ShowError(errorMessage);
             }
         }
+
+        public static IEnumerable<int> GenerateRandomList(int limit)
+        {
+            List<int> randomNumbers = new List<int>();
+            Random rand = new Random();
+            for (int i = 0; i < limit; i++)
+            {
+                randomNumbers.Add(rand.Next(100));
+            }
+            return randomNumbers;
+        }
     }
 }

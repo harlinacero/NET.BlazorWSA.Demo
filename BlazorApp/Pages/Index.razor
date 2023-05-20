@@ -1,20 +1,24 @@
 ﻿@page "/"
 @inject IConfiguration config
-@using ChartJs.Blazor.BarChart
+@inject IChart<PieConfig> _pieChart;
+@inject IChart<BarConfig> _verticalBarChart;
+@* @inject IChart<BarConfig> _horizontalBarChart; *@
 @using ChartJs.Blazor.PieChart
-@using System.Drawing
-
+@using ChartJs.Blazor.BarChart
 
 <PageTitle>Index</PageTitle>
 
-<HeaderPage Title="Dashboard"></HeaderPage>
+<HeaderPage Title="Home"></HeaderPage>
 
-<section class="dashboard">
-    <article>
-        <Chart Config="_configPie"></Chart>
+<section class="row dashboard">
+    <article class="col chart-box">
+        <Chart Config="_configBar"></Chart>
     </article>
-    <article>
-        <Chart Config="_configBar" @ref="_chartBar"></Chart>
+    @* <article class="col-5 chart-box">
+    <Chart Config="_configHorizontalBar"></Chart>
+    </article> *@
+    <article class="col chart-box">
+        <Chart Config="_configPie"></Chart>
     </article>
 </section>
 
@@ -24,104 +28,53 @@
     public string title = "";
     private PieConfig _configPie;
     private BarConfig _configBar;
-    private Chart _chartBar;
-    private Random _rng = new Random();
-    private const int InitalCount = 7;
-
     protected override void OnInitialized()
     {
         title = config.GetValue<string>("helloMessage");
 
-        _configPie = new PieConfig
-            {
-                Options = new PieOptions
-                {
-                    Responsive = true,
-                    Title = new OptionsTitle
-                    {
-                        Display = true,
-                        Text = "ChartJs.Blazor Pie Chart"
-                    }
-                }
-            };
-
-        foreach (string color in new[] { "Red", "Yellow", "Green", "Blue" })
-        {
-            _configPie.Data.Labels.Add(color);
-        }
-
-        PieDataset<int> dataset = new PieDataset<int>(new[] { 6, 5, 3, 7 })
-            {
-                BackgroundColor = new[]
-                            {
-            ColorUtil.ColorHexString(255, 99, 132), // Slice 1 aka "Red"
-            ColorUtil.ColorHexString(255, 205, 86), // Slice 2 aka "Yellow"
-            ColorUtil.ColorHexString(75, 192, 192), // Slice 3 aka "Green"
-            ColorUtil.ColorHexString(54, 162, 235), // Slice 4 aka "Blue"
-        }
-            };
-
-        _configPie.Data.Datasets.Add(dataset);
-
-        _configBar = new BarConfig(horizontal: true)
-            {
-                Options = new BarOptions
-                {
-                    Responsive = true,
-                    Legend = new Legend
-                    {
-                        Position = Position.Right
-                    },
-                    Title = new OptionsTitle
-                    {
-                        Display = true,
-                        Text = "ChartJs.Blazor Horizontal Bar Chart"
-                    }
-                }
-            };
-
-        IDataset<int> dataset1 = new BarDataset<int>(RandomScalingFactor(InitalCount), horizontal: true)
-            {
-                Label = "My first dataset",
-                BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(128, ChartColors.Red)),
-                BorderColor = ColorUtil.FromDrawingColor(ChartColors.Red),
-                BorderWidth = 1
-            };
-
-        IDataset<int> dataset2 = new BarDataset<int>(RandomScalingFactor(InitalCount), horizontal: true)
-            {
-                Label = "My second dataset",
-                BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(128, ChartColors.Blue)),
-                BorderColor = ColorUtil.FromDrawingColor(ChartColors.Blue),
-                BorderWidth = 1
-            };
-
-        //_configBar.Data.Labels.AddRange(Months.Take(InitalCount));
-        _configBar.Data.Datasets.Add(dataset1);
-        _configBar.Data.Datasets.Add(dataset2);
+        BuildPieChart();
+        BuildVerticalBar();
+        BuildHorizontalBar();
     }
 
 
-    private void RandomizeData()
+    private void BuildPieChart()
     {
-        foreach (IDataset<int> dataset in _configBar.Data.Datasets)
-        {
-            int count = dataset.Count;
-            dataset.Clear();
-            for (int i = 0; i < count; i++)
+        OptionsTitle optionsTitle = new OptionsTitle
             {
-                if (_rng.NextDouble() < 0.2)
-                {
-                    dataset.Add(0);
-                }
-                else
-                {
-                    dataset.Add(RandomScalingFactor());
-                }
-            }
-        }
+                Display = true,
+                Text = "Pie Chart"
+            };
+        _pieChart.AddOptions(optionsTitle);
+        _pieChart.AddColors(new[] { "Red", "Yellow", "Green", "Blue" });
+        _pieChart.AddDataSet();
+        _configPie = _pieChart.BuildChart();
+    }
 
-        _chartBar.Update();
+    private void BuildVerticalBar()
+    {
+        OptionsTitle optionsTitle = new OptionsTitle
+            {
+                Display = true,
+                Text = "ChartJs.Blazor Bar Chart"
+            };
+
+        _verticalBarChart.AddOptions(optionsTitle);
+        _verticalBarChart.AddDataSet();
+        _configBar = _verticalBarChart.BuildChart();
+    }
+
+    private void BuildHorizontalBar()
+    {
+        @* OptionsTitle optionsTitle = new OptionsTitle
+{
+Display = true,
+Text = "ChartJs.Blazor Horizontal Bar Chart"
+};
+
+_horizontalBarChart.AddOptions(optionsTitle);
+_horizontalBarChart.AddDataSet();
+_configHorizontalBar = _horizontalBarChart.BuildChart(); *@
     }
 
 }

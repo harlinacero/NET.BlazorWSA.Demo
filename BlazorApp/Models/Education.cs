@@ -17,7 +17,7 @@ namespace BlazorApp.Models
         public string Title { get; set; }
 
         [JsonProperty("image")]
-        public string? Image { get; set; }
+        public string Image { get; set; }
     }
 }
 
