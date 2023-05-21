@@ -5,19 +5,18 @@ using ChartJs.Blazor.Util;
 
 namespace BlazorApp.Charts
 {
-    public class VerticalChart : ChartBase
+    public class HorizontalChart : ChartBase
     {
-        public VerticalChart()
+        public HorizontalChart()
         {
             _config = new BarConfig();
         }
-
         public override void AddDataSet()
         {
             for (int i = 0; i <= 5; i++)
             {
                 IEnumerable<int> data = Utils.PageUtils.GenerateRandomList(5);
-                IDataset<int> dataset = new BarDataset<int>(data)
+                IDataset<int> dataset = new BarDataset<int>(data, true)
                 {
                     Label = $"Dataset {i}",
                     BackgroundColor = ColorUtil.FromDrawingColor(Color.FromArgb(128, Color.Blue)),
@@ -28,5 +27,6 @@ namespace BlazorApp.Charts
                 _config.Data.Datasets.Add(dataset);
             }
         }
+
     }
 }

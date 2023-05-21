@@ -1,24 +1,25 @@
 ﻿@page "/"
 @inject IConfiguration config
-@inject IChart<PieConfig> _pieChart;
-@inject IChart<BarConfig> _verticalBarChart;
-@* @inject IChart<BarConfig> _horizontalBarChart; *@
+@inject IChart<PieConfig> _pieChart
+@inject IChart<BarConfig> _verticalBarChart
+@inject IChart<LineConfig> _lineChart
 @using ChartJs.Blazor.PieChart
 @using ChartJs.Blazor.BarChart
+@using ChartJs.Blazor.LineChart
 
 <PageTitle>Index</PageTitle>
 
-<HeaderPage Title="Home"></HeaderPage>
+<HeaderPage Title="@title"></HeaderPage>
 
 <section class="row dashboard">
-    <article class="col chart-box">
-        <Chart Config="_configBar"></Chart>
+    <article class="col-6 chart-box">
+        <Chart Config="_configLine"></Chart>
     </article>
-    @* <article class="col-5 chart-box">
-    <Chart Config="_configHorizontalBar"></Chart>
-    </article> *@
-    <article class="col chart-box">
+    <article class="col-5 chart-box">
         <Chart Config="_configPie"></Chart>
+    </article>
+    <article class="col-11 chart-box">
+        <Chart Config="_configBar"></Chart>
     </article>
 </section>
 
@@ -28,13 +29,14 @@
     public string title = "";
     private PieConfig _configPie;
     private BarConfig _configBar;
+    private LineConfig _configLine;
     protected override void OnInitialized()
     {
         title = config.GetValue<string>("helloMessage");
 
         BuildPieChart();
         BuildVerticalBar();
-        BuildHorizontalBar();
+        BuildLine();
     }
 
 
@@ -64,17 +66,17 @@
         _configBar = _verticalBarChart.BuildChart();
     }
 
-    private void BuildHorizontalBar()
+    private void BuildLine()
     {
-        @* OptionsTitle optionsTitle = new OptionsTitle
-{
-Display = true,
-Text = "ChartJs.Blazor Horizontal Bar Chart"
-};
+        OptionsTitle optionsTitle = new OptionsTitle
+            {
+                Display = true,
+                Text = "ChartJs.Blazor Line Chart"
+            };
 
-_horizontalBarChart.AddOptions(optionsTitle);
-_horizontalBarChart.AddDataSet();
-_configHorizontalBar = _horizontalBarChart.BuildChart(); *@
+        _lineChart.AddOptions(optionsTitle);
+        _lineChart.AddDataSet();
+        _configLine = _lineChart.BuildChart();
     }
 
 }

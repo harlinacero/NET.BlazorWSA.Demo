@@ -5,6 +5,7 @@ using BlazorApp.Services;
 using BlazorApp.Services.Contracts;
 using Blazored.Toast;
 using ChartJs.Blazor.BarChart;
+using ChartJs.Blazor.LineChart;
 using ChartJs.Blazor.PieChart;
 using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.Components.WebAssembly.Hosting;
@@ -27,7 +28,7 @@ builder.Services.AddScoped<IAboutService, AboutService>();
 builder.Services.AddScoped<IChart<PieConfig>, PieChart>();
 builder.Services.AddScoped<IChart<BarConfig>, VerticalChart>();
 // builder.Services.AddScoped<IChart<BarConfig>, HorizontalChart>();
-
+builder.Services.AddScoped<IChart<LineConfig>, LineChart>();
 
 builder.Services.AddBlazoredToast();
 
